@@ -1,0 +1,4 @@
+# Criar um favicon básico usando PIL
+from PIL import Image
+img = Image.new('RGB', (16, 16), color='blue')
+img.save('static/favicon.ico')

@@ -1,0 +1,6 @@
+Paciente_ID,Nome,Idade,Sexo,Município,UF,CID_Principal,Descrição_CID,Data_Atendimento,Hospital,Tempo_Internação_Dias,Procedimentos_Realizados,Custo_Total_Atendimento
+1001,João Silva,45,M,Recife,PE,I10,Hipertensão essencial (primária),2024-02-01,Hospital A,5,"Consulta, Exames",1500.0
+1002,Maria Oliveira,62,F,São Paulo,SP,E11,Diabetes mellitus tipo 2,2024-02-05,Hospital B,7,"Internação, Cirurgia",12000.0
+1003,Carlos Souza,30,M,Belo Horizonte,MG,J18,"Pneumonia, não especificada",2024-02-10,Hospital C,3,"Exames, Medicação",3500.0
+1004,Ana Lima,55,F,Curitiba,PR,N18,Doença renal crônica estágio não especificado,2024-02-15,Hospital D,10,"Diálise, Consulta",18000.0
+1005,Fernanda Alves,40,F,Fortaleza,CE,C50,Neoplasia maligna da mama,2024-02-20,Hospital E,8,"Cirurgia, Quimioterapia",25000.0
