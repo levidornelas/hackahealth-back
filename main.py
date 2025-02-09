@@ -13,6 +13,16 @@ app = FastAPI(
     version="1.0.0"
 )
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://192.168.0.104:3000"],  # Adicione as origens do seu front-end
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Modelos Pydantic
 class EstatisticasBasicas(BaseModel):
     contagem: int
@@ -59,15 +69,6 @@ def create_bar_chart(data, x, y, title, xlabel, ylabel, rotation=45):
 @app.get("/")
 async def root():
     return {"message": "DATASUS API está funcionando"}
-
-@app.get("/estatisticas", response_model=Dict[str, EstatisticasBasicas])
-async def get_estatisticas():
-    try:
-        df = pd.read_csv("datasus.csv")
-        stats = df.describe().to_dict()
-        return {col: EstatisticasBasicas(**stat) for col, stat in stats.items()}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/hospitais", response_model=List[DadosHospital])
 async def get_dados_hospitais():
@@ -116,7 +117,7 @@ async def get_grafico(tipo: str):
         
         if tipo == "sexo":
             sexo_counts = df['Sexo'].value_counts().reset_index()
-            sexo_counts.columns = ['Sexo', 'Contagem']  # Renomeando as colunas
+            sexo_counts.columns = ['Sexo', 'Contagem']
             fig = create_bar_chart(
                 sexo_counts,
                 'Sexo', 'Contagem',
@@ -157,4 +158,4 @@ async def get_grafico(tipo: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="192.168.0.104", port=8000)
