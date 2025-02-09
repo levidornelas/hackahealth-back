@@ -7,14 +7,14 @@ from io import BytesIO
 from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 
-app = FastAPI(
+medData = FastAPI(
     title="Patient Evolution API",
     description="API to analyze and visualize patient evolution data",
     version="1.0.0"
 )
 
 # CORS Middleware setup remains the same
-app.add_middleware(
+medData.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://192.168.0.104:3000", "http://10.0.50.217:3000"],
     allow_credentials=True,
@@ -118,7 +118,7 @@ def analyze_parameter(param, values, ref_range):
     
     return {"status": status, "tendencia": tendencia}
 
-@app.get("/dashboard-y")
+@medData.get("/dashboard-y")
 async def get_dashboard_paciente_y():
     try:
         # Load the CSV file
