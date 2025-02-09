@@ -7,13 +7,14 @@ from io import BytesIO
 from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 
+# Cria uma instância do FastAPI com metadados sobre a API
 medData = FastAPI(
-    title="Patient Evolution API",
-    description="API to analyze and visualize patient evolution data",
+    title="API de Evolução do Paciente",
+    description="API para análise e visualização de dados de evolução do paciente",
     version="1.0.0"
 )
 
-# CORS Middleware setup remains the same
+# Configura o middleware CORS para permitir requisições de origens específicas
 medData.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://192.168.0.104:3000", "http://10.0.50.217:3000"],
@@ -22,7 +23,7 @@ medData.add_middleware(
     allow_headers=["*"],
 )
 
-# Reference ranges dictionary
+# Dicionário com os intervalos de referência para cada exame
 REFERENCE_RANGES = {
     'INR/TAP': (0.8, 1.2),
     'Lactato (mmol/L)': (0.5, 1.6),
@@ -45,6 +46,7 @@ REFERENCE_RANGES = {
     'Procalcitonina (ng/mL)': (0, 0.5)
 }
 
+# Converte um gráfico matplotlib para uma string base64
 def plot_to_base64(fig):
     buf = BytesIO()
     fig.savefig(buf, format="png", bbox_inches="tight", dpi=300)
@@ -54,13 +56,14 @@ def plot_to_base64(fig):
     plt.close(fig)
     return img_str
 
+# Cria um gráfico de linha aprimorado com intervalos de referência
 def create_enhanced_line_chart(data, x, y, title, xlabel, ylabel, exame):
     fig, ax = plt.subplots(figsize=(10, 6))
     
-    # Plot the main line
+    # Plota a linha principal
     ax.plot(data[x], data[y], marker="o", linestyle="-", color="b", label="Valores")
     
-    # Add reference ranges if available
+    # Adiciona intervalos de referência, se disponíveis
     if exame in REFERENCE_RANGES:
         ref_min, ref_max = REFERENCE_RANGES[exame]
         ax.axhline(y=ref_min, color='g', linestyle='--', alpha=0.5, label=f'Min: {ref_min}')
@@ -75,8 +78,8 @@ def create_enhanced_line_chart(data, x, y, title, xlabel, ylabel, exame):
     plt.tight_layout()
     return fig
 
+# Analisa a tendência dos valores (melhorando, piorando ou oscilando)
 def analyze_trend(values):
-    """Analyze if values are improving towards reference range"""
     if len(values) < 2:
         return "Insuficiente"
     recent_trend = values[-2:]
@@ -86,8 +89,8 @@ def analyze_trend(values):
         return "MELHORANDO ↓"
     return "OSCILANDO →"
 
+# Analisa o status e a tendência de um parâmetro específico
 def analyze_parameter(param, values, ref_range):
-    """Analyze a single parameter's status and trend"""
     if len(values) < 2:
         return {"status": "Insuficiente", "tendencia": "Insuficiente"}
     
@@ -95,7 +98,7 @@ def analyze_parameter(param, values, ref_range):
     last_value = values[-1]
     prev_value = values[-2]
     
-    # Determine current status
+    # Determina o status atual
     if last_value < ref_min:
         status = "Abaixo"
     elif last_value > ref_max:
@@ -103,7 +106,7 @@ def analyze_parameter(param, values, ref_range):
     else:
         status = "Normal"
     
-    # Determine trend
+    # Determina a tendência
     if param in ['pH (Gasometria)', 'BE (Base Excess)', 'HCO₃⁻ (mmol/L)', 'pCO₂ (mmHg)', 'pO₂ (mmHg)']:
         dist_to_range_last = min(abs(last_value - ref_min), abs(last_value - ref_max))
         dist_to_range_prev = min(abs(prev_value - ref_min), abs(prev_value - ref_max))
@@ -118,13 +121,14 @@ def analyze_parameter(param, values, ref_range):
     
     return {"status": status, "tendencia": tendencia}
 
+# Endpoint para obter o dashboard do paciente Y
 @medData.get("/dashboard-y")
 async def get_dashboard_paciente_y():
     try:
-        # Load the CSV file
-        df = pd.read_csv("datasus.csv")
+        # Carrega o arquivo CSV
+        df = pd.read_csv("dataset.csv")
         
-        # Transform the data
+        # Transforma os dados para análise
         data = []
         analysis_results = {}
         
@@ -137,11 +141,11 @@ async def get_dashboard_paciente_y():
                 row["Pós-Operatório (72h)"]
             ]
             
-            # Add to transformed data for plotting
+            # Adiciona os dados transformados para plotagem
             for idx, categoria in enumerate(["Pré-Operatório", "Pós-Operatório (24h)", "Pós-Operatório (48h)", "Pós-Operatório (72h)"]):
                 data.append([categoria, parametro, valores[idx]])
             
-            # Analyze parameter if reference range exists
+            # Analisa o parâmetro se o intervalo de referência existir
             if parametro in REFERENCE_RANGES:
                 analysis = analyze_parameter(parametro, valores, REFERENCE_RANGES[parametro])
                 analysis_results[parametro] = {
@@ -152,7 +156,7 @@ async def get_dashboard_paciente_y():
                     "valor_atual": valores[-1]
                 }
 
-        # Create DataFrame for plotting
+        # Cria um DataFrame para plotagem
         df_transformed = pd.DataFrame(data, columns=["Categoria", "Exame", "Valor"])
         df_transformed["Categoria"] = pd.Categorical(
             df_transformed["Categoria"],
@@ -161,7 +165,7 @@ async def get_dashboard_paciente_y():
         )
         df_transformed = df_transformed.sort_values(by=["Exame", "Categoria"])
 
-        # Generate enhanced graphs
+        # Gera gráficos aprimorados
         graficos = {}
         exames = df_transformed["Exame"].unique()
         for exame in exames:
@@ -183,3 +187,7 @@ async def get_dashboard_paciente_y():
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+# Inicia o servidor FastAPI
+import uvicorn
+uvicorn.run(medData, host="0.0.0.0", port=8000)
