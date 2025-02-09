@@ -190,4 +190,4 @@ async def get_dashboard_paciente_y():
     
 # Inicia o servidor FastAPI
 import uvicorn
-uvicorn.run(medData, host="192.168.0.104", port=8000)
+uvicorn.run(medData, host=".", port=8000)
