@@ -1,6 +1,6 @@
 # API de Evolução do Paciente
 
-Esta API foi desenvolvida para analisar e visualizar dados de evolução de pacientes, especialmente em contextos pós-operatórios. Ela fornece gráficos interativos e análises sobre parâmetros médicos, comparando-os com intervalos de referência pré-definidos.
+Esta API foi desenvolvida para analisar e visualizar dados de evolução de pacientes, especialmente em contextos pós-operatórios. Ela fornece gráficos interativos e análises sobre parâmetros médicos, comparando-os com intervalos de referência pré-definidos. Ela foi desenvolvida para o Hackahealth 2025, promovido pelo Porto Digital e Sebrae. 
 
 ## Funcionalidades
 
