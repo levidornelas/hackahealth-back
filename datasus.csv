@@ -1,6 +1,20 @@
-Paciente_ID,Nome,Idade,Sexo,Município,UF,CID_Principal,Descrição_CID,Data_Atendimento,Hospital,Tempo_Internação_Dias,Procedimentos_Realizados,Custo_Total_Atendimento
-1001,João Silva,45,M,Recife,PE,I10,Hipertensão essencial (primária),2024-02-01,Hospital A,5,"Consulta, Exames",1500.0
-1002,Maria Oliveira,62,F,São Paulo,SP,E11,Diabetes mellitus tipo 2,2024-02-05,Hospital B,7,"Internação, Cirurgia",12000.0
-1003,Carlos Souza,30,M,Belo Horizonte,MG,J18,"Pneumonia, não especificada",2024-02-10,Hospital C,3,"Exames, Medicação",3500.0
-1004,Ana Lima,55,F,Curitiba,PR,N18,Doença renal crônica estágio não especificado,2024-02-15,Hospital D,10,"Diálise, Consulta",18000.0
-1005,Fernanda Alves,40,F,Fortaleza,CE,C50,Neoplasia maligna da mama,2024-02-20,Hospital E,8,"Cirurgia, Quimioterapia",25000.0
+Parâmetro,Pré-Operatório,Pós-Operatório (24h),Pós-Operatório (48h),Pós-Operatório (72h)
+INR/TAP,1.2,2.8,2.5,2.0
+Lactato (mmol/L),1.5,4.2,3.0,1.8
+AST (U/L),35,450,300,150
+ALT (U/L),40,500,350,200
+pH (Gasometria),7.35,7.28,7.32,7.36
+pCO₂ (mmHg),40,45,42,40
+pO₂ (mmHg),90,85,88,92
+HCO₃⁻ (mmol/L),22,18,20,22
+BE (Base Excess),-2,-5,-3,-1
+Creatinina (mg/dL),1.0,1.8,1.5,1.2  
+Plaquetas (x10³/µL),150,90,110,130
+Bilirrubina Total (mg/dL),1.5,5.0,4.0,3.0
+Bilirrubina Direta (mg/dL),0.5,3.0,2.5,2.0
+Bilirrubina Indireta (mg/dL),1.0,2.0,1.5,1.0
+Fibrinogênio (mg/dL),300,200,250,280
+Glicemia (mg/dL),110,180,160,140
+Leucócitos (x10³/µL),7.0,12.0,10.5,9.0
+PCR (mg/L),5.0,120,80,40
+Procalcitonina (ng/mL),0.1,2.5,1.5,0.8

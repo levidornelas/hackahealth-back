@@ -12,8 +12,8 @@ pH: 7,40
 pCO₂: 40 mmHg
 HCO₃⁻: 24 mEq/L
 Lactato: 1,2 mmol/L
-"""
 
+"""
 # Processar os dados
 linhas = dados.strip().split("\n")
 data = []
