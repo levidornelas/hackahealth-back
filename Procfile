@@ -1,1 +1,0 @@
-web: uvicorn app:medData --host 0.0.0.0 --port $PORT
